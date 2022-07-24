@@ -48,16 +48,16 @@ class Serials(parser):
         attrs = self.driver.find_elements(By.CLASS_NAME, "info-row")
 
         genres = None
-        raiting = None
+        rating = None
 
         for attr in attrs:
             if "Жанры" in attr.text:
                 genres = attr.text[7:]
 
             if "Рейтинг IMDB" in attr.text:
-                raiting = attr.text[14:attr.text.find("из") - 1]
+                rating = attr.text[14:attr.text.find("из") - 1]
 
-        data = [name, raiting, genres]
+        data = [name, rating, genres]
 
         return data
 
