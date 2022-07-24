@@ -1,4 +1,4 @@
-from aiogram import Bot, types
+from aiogram import types
 from loader import dp
 from db.db_api import db_api
 from datetime import datetime
@@ -19,5 +19,5 @@ async def process_start_command(message: types.Message):
 
 
 @dp.message_handler(commands=['help'])
-async def process_start_command(message: types.Message):
+async def process_help_command(message: types.Message):
     await message.answer("Я работаю!!!")
