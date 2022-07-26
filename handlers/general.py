@@ -1,6 +1,5 @@
 from aiogram import types
 from loader import dp
-from parser.serials import Serials
 from db.db_api import db_api
 
 

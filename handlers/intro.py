@@ -1,7 +1,6 @@
 from aiogram import types
 from loader import dp
 from db.db_api import db_api
-import collections
 from datetime import datetime
 
 
