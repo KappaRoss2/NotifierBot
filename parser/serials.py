@@ -1,5 +1,5 @@
 from datetime import date
-from datetime import datetime
+import datetime
 import selenium.common.exceptions
 from parser.init_parser import Parser
 from selenium.webdriver.common.by import By
@@ -79,8 +79,13 @@ class Serials(Parser):
 
         release = self.driver.find_elements(By.CLASS_NAME, "episode-col__date")
 
-        release_dates = ", ".join([str(datetime.strptime(element.text, '%d.%m.%Y').date()) for element in release
-                         if element.text != "" and datetime.strptime(element.text, '%d.%m.%Y').date() > date.today()])
+        release_dates = [element.text for element in release if element.text != "" and element.text != "вчера"
+                         and element.text != "сегодня"]
+
+        release_dates = ", ".join([str(datetime.datetime.strptime(element, '%d.%m.%Y').date()) for element in release_dates
+                         if datetime.datetime.strptime(element, '%d.%m.%Y').date() > date.today()])
+
+        print(release_dates)
 
         return release_dates
 

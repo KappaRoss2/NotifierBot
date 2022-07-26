@@ -13,7 +13,6 @@ async def process_add_serial_command(message: types.Message):
 
     if type(result) is str:
         await message.answer(result)
-
-    serial.save(message.from_user.id, result)
-
-    await message.answer(f"Сериал {result[1]} добавлен в ваш список!")
+    else:
+        serial.save(message.from_user.id, result)
+        await message.answer(f"Сериал {result[1]} добавлен в ваш список!")
