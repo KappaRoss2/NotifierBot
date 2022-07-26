@@ -44,6 +44,10 @@ class db_api:
 
         return result
 
+    def get_user_serial_info(self, user_id):
+        self.cur.execute("SELECT title, rating_imdb, genres FROM serial_titles WHERE user_id=?;", (user_id,))
+        return self.cur.fetchall()
+
 
 
 
