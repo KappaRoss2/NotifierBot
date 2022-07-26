@@ -1,4 +1,5 @@
 import sqlite3
+import collections
 
 # Класс для работы с БД
 
@@ -18,13 +19,32 @@ class db_api:
     # Получаем информацию об определенном пользователя с id = user_id
     def get_user_info(self, user_id):
         self.cur.execute("SELECT * from users WHERE user_id=?;", (user_id, ))
-        return self.cur.fetchone()
+        result = self.cur.fetchone()
+
+        if result is not None:
+            data = collections.namedtuple('User', ['id', 'user_id', 'join_date', 'user_name'])
+            data = data(id=result[0], user_id=result[1], join_date=result[2], user_name=result[3])
+            return data
+        else:
+            return result
 
     # Добавляем сериал в таблицу serial_titles
     def add_serial(self, data):
         self.cur.execute("INSERT INTO serial_titles(user_id, title, rating_imdb, genres, releases) "
                          "VALUES (?, ?, ?, ?, ?);", data)
         self.conn.commit()
+
+    # Получаем сериалы, которые добавил пользователь к себе в список
+    def get_user_title(self, user_id):
+        self.cur.execute("SELECT title FROM serial_titles WHERE user_id=?;", (user_id, ))
+
+        result = ()
+        for title in self.cur.fetchall():
+            result += title
+
+        return result
+
+
 
 
 

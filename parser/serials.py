@@ -1,6 +1,6 @@
 from datetime import date
 import datetime
-import selenium.common.exceptions
+import selenium.common
 from parser.init_parser import Parser
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -24,7 +24,7 @@ class Serials(Parser):
         handler = self.driver.current_window_handle
         self.driver.switch_to.window(handler)
 
-        time.sleep(1)
+        time.sleep(1) #Это нужно поправить!!!
 
         element = self.is_valid_title(title)
 
@@ -82,10 +82,9 @@ class Serials(Parser):
         release_dates = [element.text for element in release if element.text != "" and element.text != "вчера"
                          and element.text != "сегодня"]
 
-        release_dates = ", ".join([str(datetime.datetime.strptime(element, '%d.%m.%Y').date()) for element in release_dates
-                         if datetime.datetime.strptime(element, '%d.%m.%Y').date() > date.today()])
-
-        print(release_dates)
+        release_dates = ", ".join([str(datetime.datetime.strptime(element, '%d.%m.%Y').date())
+                                    for element in release_dates
+                                     if datetime.datetime.strptime(element, '%d.%m.%Y').date() > date.today()])
 
         return release_dates
 

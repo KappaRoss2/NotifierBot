@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b5ba2b67-1744-4a8c-bbce-9cead88fd054" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/notifier.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/notifier.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/intro.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/intro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/serials.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/serials.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/init_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/init_parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser/serials.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/serials.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +103,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/handlers/intro.py" />
+      <option name="SCRIPT_NAME" value="E:\Study\telegram_bot\handlers\intro.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -154,8 +157,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.serials" />
         <item itemvalue="Python.db_api" />
+        <item itemvalue="Python.serials" />
         <item itemvalue="Python.intro" />
         <item itemvalue="Python.config" />
       </list>
