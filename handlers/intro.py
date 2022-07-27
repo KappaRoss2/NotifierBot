@@ -24,4 +24,5 @@ async def process_start_command(message: types.Message):
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
     await message.answer("/add_serial [Название сериала] - добавляет сериал в список отслеживаемого;\n"
-                         "/info - выводит информацию о отслеживаемых сериалах.")
+                         "/delete [Название сериала] - удаляет сериал из списка отслеживаемого\n"
+                         "/info - выводит информацию о отслеживаемых сериалах.\n")
