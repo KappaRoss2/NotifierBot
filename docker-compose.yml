@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  bot:
+    build: .
+    container_name: bot-container
+    command: python main.py
+    volumes:
+      - .:/usr/src/bot

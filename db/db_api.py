@@ -1,14 +1,13 @@
 import sqlite3
 import collections
 
+
 # Класс для работы с БД
-
-
 class db_api:
 
     # Подключаемся к нашей БД
     def __init__(self):
-        self.conn = sqlite3.connect("db\\notifier.db")
+        self.conn = sqlite3.connect("db/notifier.db")
         self.cur = self.conn.cursor()
 
     # Добавляем пользователя в БД
@@ -44,10 +43,15 @@ class db_api:
 
         return result
 
+    # Получаем данные о сериалах, которые отслеживает определенный пользователь
     def get_user_serial_info(self, user_id):
         self.cur.execute("SELECT title, rating_imdb, genres FROM serial_titles WHERE user_id=?;", (user_id,))
         return self.cur.fetchall()
 
+    # Удаляем сериал из отслеживаемого у определенного пользователя
+    def delete_serial(self, user_id, title):
+        self.cur.execute("DELETE FROM serial_titles WHERE user_id=? and title=?;", (user_id, title, ))
+        self.conn.commit()
 
 
 
