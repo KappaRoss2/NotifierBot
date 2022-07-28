@@ -21,9 +21,6 @@ class Serials(Parser):
         input.send_keys(title)
         input.send_keys(Keys.ENTER)
 
-        handler = self.driver.current_window_handle
-        self.driver.switch_to.window(handler)
-
         time.sleep(1) #Это нужно поправить!!!
 
         element = self.is_valid_title(title)
