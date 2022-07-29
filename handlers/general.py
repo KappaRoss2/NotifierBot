@@ -27,22 +27,26 @@ async def process_info_command(message: types.Message):
     for title in anime_titles:
         await message.answer(f"Название: {title[0]}\n"
                              f"Жанры: {title[1]}\n"
-                             f"Возврастной рейтинг: {title[2]}\n"
-                             f"Студия: {title[3]}.")
+                             f"Возврастной рейтинг: {title[2]}\n")
 
 
 # Команда /delete - Удаляем сериал из списка отслеживаемого
 @dp.message_handler(commands=['delete'])
 async def process_delete_command(message: types.Message):
     user_info = db_api().get_user_info(message.from_user.id)
-    target_titles = db_api().get_user_serial_info(user_info.id)
+
+    serial_titles = db_api().get_user_serial_info(user_info.id)
+    anime_titles = db_api().get_user_anime_info(user_info.id)
 
     title = str(message.text[8:]).strip()
 
     if title != "":
-        if check_title(title, target_titles):
+        if check_title(title, serial_titles):
             db_api().delete_serial(user_info.id, title)
             await message.answer(f"Сериал {title} удален из списка отслеживаемого.")
+        elif check_title(title, anime_titles):
+            db_api().delete_anime(user_info.id, title)
+            await message.answer(f"Аниме {title} удалено из списка отслеживаемого.")
         else:
             await message.answer(f"Сериал {title} не находится в вашем списке отслеживаемого.")
     else:

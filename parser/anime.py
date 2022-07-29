@@ -74,7 +74,7 @@ class Anime(Parser):
         anime_title = self.driver.find_element(By.CLASS_NAME, "anime-title").find_element(By.TAG_NAME, 'h1').text
 
         date_release = self.convert_date(attrs[0])
-        result = [anime_title, attrs[5].text, attrs[10].text, attrs[9].text, date_release]
+        result = [anime_title, attrs[5].text, attrs[10].text, date_release]
 
         return result
 

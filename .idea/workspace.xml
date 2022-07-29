@@ -5,9 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/db_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/notifier.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/notifier.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/anime.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/anime.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/general.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/serials.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/serials.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/intro.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/intro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser/anime.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/anime.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

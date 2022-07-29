@@ -56,15 +56,20 @@ class db_api:
 
     # Добавляем аниме в таблицу anime_titles
     def add_anime(self, data):
-        self.cur.execute("INSERT INTO anime_titles(user_id, title, genres, rating, drawing_studio, release) "
-                         "VALUES (?, ?, ?, ?, ?, ?);", data)
+        self.cur.execute("INSERT INTO anime_titles(user_id, title, genres, rating, release) "
+                         "VALUES (?, ?, ?, ?, ?);", data)
         self.conn.commit()
 
     # Получаем данные о аниме, которые отслеживает пользователь
     def get_user_anime_info(self, user_id):
-        self.cur.execute("SELECT title, genres, rating, drawing_studio, release "
+        self.cur.execute("SELECT title, genres, rating, release "
                          "FROM anime_titles WHERE user_id=?;", (user_id,))
         return self.cur.fetchall()
+
+    # Удаляем аниме из отслеживаемого у определенного пользователя
+    def delete_anime(self, user_id, title):
+        self.cur.execute("DELETE FROM anime_titles WHERE user_id=? and title=?;", (user_id, title, ))
+        self.conn.commit()
 
 
 
