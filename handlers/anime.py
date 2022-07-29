@@ -10,7 +10,26 @@ async def process_add_anime_command(message: types.Message):
 
     title = str(message.text[11:]).strip()
 
-    anime = Anime("https://animego.org/search/all?q=")
-    anime.run(title)
+    user_info = db_api().get_user_info(message.from_user.id)
+    titles_info = db_api().get_user_anime_info(user_info.id)
 
-    await message.answer("Я буду добавлять аниме в БД!")
+    merge_titles_info = []
+    for element in titles_info:
+        merge_titles_info += element
+
+    merge_titles_info = [element.lower() for element in merge_titles_info]
+
+    if title != "":
+        if title.lower() not in merge_titles_info:
+            anime = Anime("https://animego.org/search/all?q=")
+            result = anime.run(title)
+            if type(result) is str:
+                await message.answer(result)
+            else:
+                db_api().add_anime([user_info.id] + result)
+                await message.answer(f"Аниме {title} Добавлено в список отслеживаемого.")
+        else:
+            await message.answer(f"Аниме {title} уже есть в вашем списке.")
+    else:
+        await message.answer(f"Неправильно используется команда /add_serial, воспользуйтесь командой /help "
+                             f"чтобы ознакомиться с возможностями бота.")

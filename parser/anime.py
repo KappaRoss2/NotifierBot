@@ -45,16 +45,16 @@ class Anime(Parser):
     @staticmethod
     def is_valid_title(title, titles):
         for element in titles:
-            if title.lower() in element.find_element(By.CLASS_NAME, "card-title").text.lower():
-                return title
+            if title.lower() == element.find_element(By.CLASS_NAME, "card-title").text.lower():
+                return element.find_element(By.CLASS_NAME, "card-title").text
 
     # Проверяем статус аниме
     def is_valid_status(self, title):
         titles = self.driver.find_elements(By.CLASS_NAME, "card-title")
 
         for element in titles:
-            if element.text == title:
-                element.find_element(By.LINK_TEXT, title).click()
+            if element.text.lower() == title.lower():
+                element.find_element(By.LINK_TEXT, element.text).click()
                 break
 
         WebDriverWait(self.driver, 10).until(
@@ -69,14 +69,53 @@ class Anime(Parser):
 
     # Собираем данные о аниме
     def parse_title(self):
-        pass
+        attrs = self.driver.find_element(By.CLASS_NAME, "anime-info").find_elements(By.TAG_NAME, "dd")
 
+        anime_title = self.driver.find_element(By.CLASS_NAME, "anime-title").find_element(By.TAG_NAME, 'h1').text
+
+        date_release = self.convert_date(attrs[0])
+        result = [anime_title, attrs[5].text, attrs[10].text, attrs[9].text, date_release]
+
+        return result
+
+    # Преобразуем дату в правильный формат
+    @staticmethod
+    def convert_date(date_release):
+        month = {
+            'янв.': '01',
+            'фев.': '02',
+            'мар.': '03',
+            'апр.': '04',
+            'мая': '05',
+            'июн.': '06',
+            'июл.': '07',
+            'авг.': '08',
+            'сен.': '09',
+            'окт.': '10',
+            'ноя.': '11',
+            'дек.': '12',
+
+        }
+
+        date_release = date_release.text[:date_release.text.find(':') - 5].rstrip().split()
+
+        for key in month:
+            if key in date_release:
+                date_release[date_release.index(key)] = month.get(key)
+                break
+
+        return "-".join(date_release)
+
+    # Собираем все воедино
     def run(self, title):
         titles = self.parse_page(title)
         if self.is_valid_title(title, titles):
-            print(self.is_valid_status(title))
+            if self.is_valid_status(title):
+                return self.parse_title()
+            else:
+                return f"Аниме {title} не является онгоингом."
         else:
-            print("Неправильное название!!!")
+            return "Неправильное название."
 
 
 

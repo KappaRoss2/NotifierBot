@@ -22,9 +22,8 @@ async def process_add_serial_command(message: types.Message):
             if type(result) is str:
                 await message.answer(result)
             else:
-                result.insert(0, user_info.id)
-                db_api().add_serial(result)
-                await message.answer(f"Сериал {result[1]} добавлен в ваш список!")
+                db_api().add_serial([user_info.id] + result)
+                await message.answer(f"Сериал {title} добавлен в ваш список!")
         else:
             await message.answer(f"Сериал {title} уже есть в вашем списке")
     else:
