@@ -32,7 +32,7 @@ class Serials(Parser):
     def is_valid_title(self, title):
         check_title = self.driver.find_elements(By.CLASS_NAME, "Row")
         for element in check_title:
-            if title in element.text:
+            if title.lower() in element.text.lower():
                 return element
 
     # Проверяем выпускается ли сериал, зачем следить за сериалом, который итак закрыт?

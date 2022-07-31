@@ -1,12 +1,9 @@
-from datetime import date
-import datetime
 import selenium.common
 from parser.init_parser import Parser
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 
 
 # Класс для парсинга метаданных определенного аниме

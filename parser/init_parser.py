@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium_stealth import stealth
-from db.db_api import db_api
 
 # Инициализируем родительский класс Parser
 class Parser:

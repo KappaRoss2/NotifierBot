@@ -3,11 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b5ba2b67-1744-4a8c-bbce-9cead88fd054" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/notifier.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/notifier.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/general.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/intro.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/intro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser/anime.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/anime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/init_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/init_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/serials.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser/serials.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,9 +44,10 @@
     <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Python_Practice" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.db_api">
+  <component name="RunManager" selected="Python.main">
     <configuration name="anime" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="telegram_bot" />
       <option name="INTERPRETER_OPTIONS" value="" />
