@@ -13,7 +13,7 @@ import time
 class Serials(Parser):
 
     # Парсим результаты поиска
-    def parse_page(self, title):
+    def parse_page(self, title: str) -> selenium.webdriver:
 
         self.driver.get(self.url)
 
@@ -29,7 +29,7 @@ class Serials(Parser):
             return element
 
     # Проверяем существует ли такой сериал в принципе
-    def is_valid_title(self, title):
+    def is_valid_title(self, title: str) -> selenium.webdriver:
         check_title = self.driver.find_elements(By.CLASS_NAME, "Row")
         for element in check_title:
             if title.lower() in element.text.lower():
@@ -37,7 +37,7 @@ class Serials(Parser):
 
     # Проверяем выпускается ли сериал, зачем следить за сериалом, который итак закрыт?
     @staticmethod
-    def is_valid_status(element):
+    def is_valid_status(element: selenium.webdriver) -> str or selenium.webdriver:
         try:
             status = element.find_element(By.CLASS_NAME, "_dead")
         except selenium.common.exceptions.NoSuchElementException:
@@ -46,7 +46,7 @@ class Serials(Parser):
         return status
 
     # Собираем данные о сериале
-    def parse_title(self):
+    def parse_title(self) -> list:
         name = self.driver.find_element(By.CLASS_NAME, "title__main").text
         attrs = self.driver.find_elements(By.CLASS_NAME, "info-row")
 
@@ -67,7 +67,7 @@ class Serials(Parser):
         return data
 
     # Отдельный метод для получения списка дат выхода следующих серий
-    def get_release(self):
+    def get_release(self) -> str:
         self.driver.find_element(By.CLASS_NAME, "episodes-by-season__season-row_toggle-icon").click()
 
         WebDriverWait(self.driver, 10).until(
@@ -86,7 +86,7 @@ class Serials(Parser):
         return release_dates
 
     # Складываем все воедино
-    def run(self, title):
+    def run(self, title: str) -> list or str:
         element = self.parse_page(title)
         if element:
             if self.is_valid_status(element) == "Fine":
@@ -104,6 +104,6 @@ class Serials(Parser):
                 return data
 
             else:
-                return "Сериал уже давно закрыли, чеееееееел"
+                return "Сериал уже давно закрыли."
         else:
-            return "Не знаю такого сериала"
+            return "Не знаю такого сериала."

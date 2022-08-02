@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class Anime(Parser):
 
     # Парсим результаты поиска
-    def parse_page(self, title):
+    def parse_page(self, title: str) -> selenium.webdriver:
         self.driver.get(self.url)
 
         input = self.driver.find_element(By.CLASS_NAME, "form-control-lg").find_element(By.TAG_NAME, "input")
@@ -40,13 +40,13 @@ class Anime(Parser):
 
     # Проверяем есть ли такое аниме
     @staticmethod
-    def is_valid_title(title, titles):
+    def is_valid_title(title: str, titles: selenium.webdriver) -> str:
         for element in titles:
             if title.lower() == element.find_element(By.CLASS_NAME, "card-title").text.lower():
                 return element.find_element(By.CLASS_NAME, "card-title").text
 
     # Проверяем статус аниме
-    def is_valid_status(self, title):
+    def is_valid_status(self, title: str) -> bool:
         titles = self.driver.find_elements(By.CLASS_NAME, "card-title")
 
         for element in titles:
@@ -65,7 +65,7 @@ class Anime(Parser):
                 return True
 
     # Собираем данные о аниме
-    def parse_title(self):
+    def parse_title(self) -> list:
         attrs = self.driver.find_element(By.CLASS_NAME, "anime-info").find_elements(By.TAG_NAME, "dd")
 
         anime_title = self.driver.find_element(By.CLASS_NAME, "anime-title").find_element(By.TAG_NAME, 'h1').text
@@ -77,7 +77,7 @@ class Anime(Parser):
 
     # Преобразуем дату в правильный формат
     @staticmethod
-    def convert_date(date_release):
+    def convert_date(date_release: selenium.webdriver) -> str:
         month = {
             'янв.': '01',
             'фев.': '02',
@@ -104,7 +104,7 @@ class Anime(Parser):
         return "-".join(date_release)
 
     # Собираем все воедино
-    def run(self, title):
+    def run(self, title: str) -> list or str:
         titles = self.parse_page(title)
         if self.is_valid_title(title, titles):
             if self.is_valid_status(title):

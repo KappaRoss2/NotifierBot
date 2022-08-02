@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium_stealth import stealth
 
+
 # Инициализируем родительский класс Parser
 class Parser:
 
