@@ -53,6 +53,42 @@ class db_api:
         self.cur.execute("DELETE FROM serial_titles WHERE user_id=? and title=?;", (user_id, title, ))
         self.conn.commit()
 
+    # Получаем даты всех релизов сериалов
+    def get_serial_releases(self) -> list:
+        self.cur.execute("SELECT DISTINCT releases FROM serial_titles")
+        return self.cur.fetchall()
+
+    # Получаем тайтлы, которые выходят в определенную дату
+    def get_serial_titles(self, date: str) -> tuple:
+        self.cur.execute("SELECT DISTINCT title FROM serial_titles WHERE releases = ?;", (date,))
+
+        data = ()
+
+        for fetch in self.cur.fetchall():
+            data += fetch
+
+        return data
+
+    # Получаем user_id пользователей, которым нужно будет отправлять уведомление
+    def get_userid_serial_notify(self, date: str) -> tuple:
+        self.cur.execute("SELECT DISTINCT user_id FROM serial_titles WHERE title "\
+                         "IN (SELECT DISTINCT title FROM serial_titles WHERE releases = ?);", (date,))
+        data = ()
+        for fetch in self.cur.fetchall():
+            data += fetch
+
+        return data
+
+    # Обновляем данные о сериале
+    def update_serial_table(self, date: str, title: str):
+        self.cur.execute("UPDATE serial_titles SET releases=? WHERE title=?", (date, title,))
+        self.conn.commit()
+
+    # Удаляем данные по определенному сериалу
+    def delete_column_serial(self, title: str):
+        self.cur.execute("DELETE FROM serial_titles WHERE title=?", (title,))
+        self.conn.commit()
+
     # Добавляем аниме в таблицу anime_titles
     def add_anime(self, data: list):
         self.cur.execute("INSERT INTO anime_titles(user_id, title, genres, rating, release) "
@@ -80,6 +116,7 @@ class db_api:
         self.cur.execute("SELECT DISTINCT title FROM anime_titles WHERE release = ?;", (date, ))
 
         data = ()
+
         for fetch in self.cur.fetchall():
             data += fetch
 

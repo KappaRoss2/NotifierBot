@@ -46,7 +46,7 @@ class Serials(Parser):
         return status
 
     # Собираем данные о сериале
-    def parse_title(self) -> list:
+    def parse_title(self) -> list or str:
         name = self.driver.find_element(By.CLASS_NAME, "title__main").text
         attrs = self.driver.find_elements(By.CLASS_NAME, "info-row")
 
@@ -62,9 +62,12 @@ class Serials(Parser):
 
         release = self.get_release()
 
-        data = [name, rating, genres, release]
-
-        return data
+        if release:
+            data = [name, rating, genres, release]
+            return data
+        else:
+            return "Сериал будет продолжен, но неизвестны даты выхода новых серий, поэтому я пока не могу добавить его"\
+                    "в список отслеживаемого :("
 
     # Отдельный метод для получения списка дат выхода следующих серий
     def get_release(self) -> str:
