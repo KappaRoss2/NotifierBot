@@ -4,6 +4,11 @@ from parser.serials import Serials
 from db.db_api import db_api
 
 
+def convert_to_lower(list_of_strings: tuple):
+    list_of_strings = [string.lower() for string in list_of_strings]
+    return list_of_strings
+
+
 # Команда /add_serial - добавляет сериал в БД
 @dp.message_handler(commands=['add_serial'])
 async def process_add_serial_command(message: types.Message):
@@ -15,7 +20,9 @@ async def process_add_serial_command(message: types.Message):
         user_info = db_api().get_user_info(message.from_user.id)
         title_info = db_api().get_user_title(user_info.id)
 
-        if title not in title_info:
+        title_info = convert_to_lower(title_info)
+
+        if title.lower() not in title_info:
             serial = Serials("https://myshows.me/search/all/")
             result = serial.run(title)
 

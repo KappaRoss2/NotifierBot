@@ -79,11 +79,9 @@ class Serials(Parser):
         release_dates = [element.text for element in release if element.text != "" and element.text != "вчера"
                          and element.text != "сегодня"]
 
-        release_dates = ", ".join([str(datetime.datetime.strptime(element, '%d.%m.%Y').date())
-                                    for element in release_dates
-                                     if datetime.datetime.strptime(element, '%d.%m.%Y').date() > date.today()])
-
-        return release_dates
+        for dates in reversed(release_dates):
+            if datetime.datetime.strptime(dates, '%d.%m.%Y').date() > date.today():
+                return str(datetime.datetime.strptime(dates, '%d.%m.%Y').date())
 
     # Складываем все воедино
     def run(self, title: str) -> list or str:
