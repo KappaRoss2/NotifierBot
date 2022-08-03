@@ -1,10 +1,10 @@
 import datetime
-from db.db_api import db_api
+from db.db_api_serial import db_api_serial
 
 
 # Проверяем выходит ли сегодня новая серия какого-либо сериала
 def send_today(current_date: str) -> bool:
-    release_dates = db_api().get_serial_releases()
+    release_dates = db_api_serial().get_releases()
     for date in release_dates:
         if current_date in date:
             return True
@@ -12,7 +12,7 @@ def send_today(current_date: str) -> bool:
 
 # Получаем тайтлы, которые выходят сегодня
 def get_titles(current_date: str) -> tuple:
-    titles = db_api().get_serial_titles(current_date)
+    titles = db_api_serial().get_titles(current_date)
     return titles
 
 

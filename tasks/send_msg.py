@@ -1,4 +1,6 @@
 from db.db_api import db_api
+from db.db_api_serial import db_api_serial
+from db.db_api_anime import db_api_anime
 from tasks.anime_check import run as anime_run
 from tasks.serial_check import run as serial_run
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -14,9 +16,9 @@ async def update_anime_table(target_titles: tuple):
         anime = Anime("https://animego.org/search/all?q=")
         result = anime.run(title)
         if type(result) is list and result is not None:
-            db_api().update_anime_table(result[3], result[0])
+            db_api_anime().update_table(result[3], result[0])
         elif type(result) is str:
-            db_api().delete_column_anime(result[0])
+            db_api_anime().delete_column(result[0])
 
 
 # Изменяем данные в таблице serial_titles
@@ -25,9 +27,9 @@ async def update_serial_table(target_titles: tuple):
         serial = Serials("https://myshows.me/search/all/")
         result = serial.run(title)
         if type(result) is list and result is not None:
-            db_api().update_serial_table(result[3], result[0])
+            db_api_serial().update_table(result[3], result[0])
         elif type(result) is str:
-            db_api().delete_column_serial(result[0])
+            db_api_serial().delete_column(result[0])
 
 
 # Отправляем сообщение о выходе новых серий аниме соответствующим пользователям
@@ -35,9 +37,9 @@ async def send_msg_anime():
     target_titles = await anime_run()
     today = datetime.datetime.now().strftime("%#d-%m-%Y")
     if target_titles:
-        users = db_api().get_userid_anime_notify(today)
+        users = db_api_anime().get_userid_notify(today)
         for user in users:
-            user_titles = db_api().get_user_anime_info(user)
+            user_titles = db_api_anime().get_user_info(user)
             for title in user_titles:
                 if title[0] in target_titles:
                     chat_id = db_api().get_userid_for_bot(user)[0]
@@ -50,9 +52,9 @@ async def send_msg_serial():
     target_titles = await serial_run()
     today = str(datetime.date.today())
     if target_titles:
-        users = db_api().get_userid_serial_notify(today)
+        users = db_api_serial().get_userid_notify(today)
         for user in users:
-            user_titles = db_api().get_user_serial_info(user)
+            user_titles = db_api_serial().get_user_info(user)
             for title in user_titles:
                 if title[0] in target_titles:
                     chat_id = db_api().get_userid_for_bot(user)[0]
@@ -63,7 +65,7 @@ async def send_msg_serial():
 # Запускаем функции send_msg_anime и send_msg_serial с интервалом в один день.
 scheduler = AsyncIOScheduler()
 
-scheduler.add_job(send_msg_anime, "cron", hour=20, minute=28)
-scheduler.add_job(send_msg_serial, "cron", hour=20, minute=28)
+scheduler.add_job(send_msg_anime, "cron", hour=17, minute=00)
+scheduler.add_job(send_msg_serial, "cron", hour=17, minute=00)
 
 scheduler.start()

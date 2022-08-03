@@ -2,6 +2,7 @@ from aiogram import types
 from loader import dp
 from parser.anime import Anime
 from db.db_api import db_api
+from db.db_api_anime import db_api_anime
 
 
 # Команда /add_anime - добавляет аниме в БД
@@ -11,7 +12,7 @@ async def process_add_anime_command(message: types.Message):
     title = str(message.text[11:]).strip()
 
     user_info = db_api().get_user_info(message.from_user.id)
-    titles_info = db_api().get_user_anime_info(user_info.id)
+    titles_info = db_api_anime().get_user_info(user_info.id)
 
     merge_titles_info = []
     for element in titles_info:
@@ -26,7 +27,7 @@ async def process_add_anime_command(message: types.Message):
             if type(result) is str:
                 await message.answer(result)
             else:
-                db_api().add_anime([user_info.id] + result)
+                db_api_anime().add([user_info.id] + result)
                 await message.answer(f"Аниме {title} Добавлено в список отслеживаемого.")
         else:
             await message.answer(f"Аниме {title} уже есть в вашем списке.")

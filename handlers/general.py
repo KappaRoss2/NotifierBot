@@ -1,6 +1,8 @@
 from aiogram import types
 from loader import dp
 from db.db_api import db_api
+from db.db_api_serial import db_api_serial
+from db.db_api_anime import db_api_anime
 
 
 # Проверяем имеется ли сериал в списке отслеживаемого у пользователя
@@ -16,8 +18,8 @@ def check_title(title, target_titles):
 async def process_info_command(message: types.Message):
 
     user_info = db_api().get_user_info(message.from_user.id)
-    serial_titles = db_api().get_user_serial_info(user_info.id)
-    anime_titles = db_api().get_user_anime_info(user_info.id)
+    serial_titles = db_api_serial().get_user_info(user_info.id)
+    anime_titles = db_api_anime().get_user_info(user_info.id)
 
     for title in serial_titles:
         await message.answer(f"Название: {title[0]}\n"
@@ -35,17 +37,17 @@ async def process_info_command(message: types.Message):
 async def process_delete_command(message: types.Message):
     user_info = db_api().get_user_info(message.from_user.id)
 
-    serial_titles = db_api().get_user_serial_info(user_info.id)
-    anime_titles = db_api().get_user_anime_info(user_info.id)
+    serial_titles = db_api_serial().get_user_info(user_info.id)
+    anime_titles = db_api_anime().get_user_info(user_info.id)
 
     title = str(message.text[8:]).strip()
 
     if title != "":
         if check_title(title, serial_titles):
-            db_api().delete_serial(user_info.id, title)
+            db_api_serial().delete(user_info.id, title)
             await message.answer(f"Сериал {title} удален из списка отслеживаемого.")
         elif check_title(title, anime_titles):
-            db_api().delete_anime(user_info.id, title)
+            db_api_anime().delete(user_info.id, title)
             await message.answer(f"Аниме {title} удалено из списка отслеживаемого.")
         else:
             await message.answer(f"Сериал {title} не находится в вашем списке отслеживаемого.")
