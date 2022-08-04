@@ -71,7 +71,10 @@ class Serials(Parser):
 
     # Отдельный метод для получения списка дат выхода следующих серий
     def get_release(self) -> str:
-        self.driver.find_element(By.CLASS_NAME, "episodes-by-season__season-row_toggle-icon").click()
+        try:
+            self.driver.find_element(By.CLASS_NAME, "episodes-by-season__season-row_toggle-icon").click()
+        except selenium.common.exceptions.NoSuchElementException:
+            pass
 
         WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, "episode-col__date"))

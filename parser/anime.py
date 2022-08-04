@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import datetime
 
 
 # Класс для парсинга метаданных определенного аниме
@@ -77,7 +78,7 @@ class Anime(Parser):
 
     # Преобразуем дату в правильный формат
     @staticmethod
-    def convert_date(date_release: selenium.webdriver) -> str:
+    def convert_date(date_release: selenium.webdriver) -> datetime:
         month = {
             'янв.': '01',
             'фев.': '02',
@@ -101,7 +102,10 @@ class Anime(Parser):
                 date_release[date_release.index(key)] = month.get(key)
                 break
 
-        return "-".join(date_release)
+        date_release = datetime.datetime.strptime("-".join(date_release), '%d-%m-%Y').date()\
+            + datetime.timedelta(days=1)
+
+        return date_release
 
     # Собираем все воедино
     def run(self, title: str) -> list or str:

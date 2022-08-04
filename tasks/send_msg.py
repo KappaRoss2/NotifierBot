@@ -11,7 +11,7 @@ import datetime
 
 
 # Изменяем данные в таблице anime_titles
-async def update_anime_table(target_titles: tuple):
+def update_anime_table(target_titles: tuple):
     for title in target_titles:
         anime = Anime("https://animego.org/search/all?q=")
         result = anime.run(title)
@@ -22,7 +22,7 @@ async def update_anime_table(target_titles: tuple):
 
 
 # Изменяем данные в таблице serial_titles
-async def update_serial_table(target_titles: tuple):
+def update_serial_table(target_titles: tuple):
     for title in target_titles:
         serial = Serials("https://myshows.me/search/all/")
         result = serial.run(title)
@@ -44,7 +44,7 @@ async def send_msg_anime():
                 if title[0] in target_titles:
                     chat_id = db_api().get_userid_for_bot(user)[0]
                     await bot.send_message(chat_id, f"Сегодня выйдет новая серия аниме \"{title[0]}\"!")
-        await update_anime_table(target_titles)
+        update_anime_table(target_titles)
 
 
 # Отправляем сообщение о выходе новых серий сериалов соответствующим пользователям
@@ -59,13 +59,13 @@ async def send_msg_serial():
                 if title[0] in target_titles:
                     chat_id = db_api().get_userid_for_bot(user)[0]
                     await bot.send_message(chat_id, f"Сегодня выйдет новая серия сериала \"{title[0]}\"!")
-        await update_serial_table(target_titles)
+        update_serial_table(target_titles)
 
 
 # Запускаем функции send_msg_anime и send_msg_serial с интервалом в один день.
 scheduler = AsyncIOScheduler()
 
-scheduler.add_job(send_msg_anime, "cron", hour=17, minute=00)
-scheduler.add_job(send_msg_serial, "cron", hour=17, minute=00)
+scheduler.add_job(send_msg_anime, "cron", hour=17, minute=43)
+scheduler.add_job(send_msg_serial, "cron", hour=12, minute=0)
 
 scheduler.start()
