@@ -3,6 +3,7 @@ from loader import dp
 from db.db_api import db_api
 from db.db_api_serial import db_api_serial
 from db.db_api_anime import db_api_anime
+import datetime
 
 
 # Проверяем имеется ли сериал в списке отслеживаемого у пользователя
@@ -20,16 +21,22 @@ async def process_info_command(message: types.Message):
     user_info = db_api().get_user_info(message.from_user.id)
     serial_titles = db_api_serial().get_user_info(user_info.id)
     anime_titles = db_api_anime().get_user_info(user_info.id)
+    if serial_titles and anime_titles:
+        for title in serial_titles:
+            await message.answer(f"Название: {title[0]}\n"
+                                 f"Рейтинг IMDB: {title[1]} из 10\n"
+                                 f"Жанры: {title[2]}\n"
+                                 f"Дата выхода следующей"
+                                 f" серии: {datetime.datetime.strptime(title[3], '%Y-%m-%d').strftime('%d.%m.%Y')}.")
 
-    for title in serial_titles:
-        await message.answer(f"Название: {title[0]}\n"
-                             f"Рейтинг IMDB: {title[1]} из 10\n"
-                             f"Жанры: {title[2]}.")
-
-    for title in anime_titles:
-        await message.answer(f"Название: {title[0]}\n"
-                             f"Жанры: {title[1]}\n"
-                             f"Возврастной рейтинг: {title[2]}\n")
+        for title in anime_titles:
+            await message.answer(f"Название: {title[0]}\n"
+                                 f"Жанры: {title[1]}\n"
+                                 f"Возврастной рейтинг: {title[2]}\n"
+                                 f"Дата выхода следующей"
+                                 f" серии: {datetime.datetime.strptime(title[3], '%Y-%m-%d').strftime('%d.%m.%Y')}.")
+    else:
+        await message.answer("Может добавишь что-нибудь в свой список?")
 
 
 # Команда /delete - Удаляем сериал из списка отслеживаемого
