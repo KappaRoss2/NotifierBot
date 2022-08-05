@@ -65,7 +65,7 @@ async def send_msg_serial():
 # Запускаем функции send_msg_anime и send_msg_serial с интервалом в один день.
 scheduler = AsyncIOScheduler()
 
-scheduler.add_job(send_msg_anime, "cron", hour=17, minute=43)
+scheduler.add_job(send_msg_anime, "cron", hour=12, minute=0)
 scheduler.add_job(send_msg_serial, "cron", hour=12, minute=0)
 
 scheduler.start()

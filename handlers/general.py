@@ -54,3 +54,14 @@ async def process_delete_command(message: types.Message):
     else:
         await message.answer(f"Неправильно используется команда /delete, воспользуйтесь /help для того,"
                              f" чтобы ознакомиться с возможностями бота.")
+
+
+# Команда /leave - Удаляем пользователя из БД, если он не хочет пользоваться нашим ботом
+@dp.message_handler(commands=['leave'])
+async def process_leave_command(message: types.Message):
+    user_info = db_api().get_user_info(message.from_user.id)
+    if user_info:
+        db_api().delete_user(message.from_user.id)
+        await message.answer("Ну ладно, пока, но если я тебе понадоблюсь снова, просто введи команду /start.")
+    else:
+        await message.answer("Может стоит для начала познакомиться со мной?(введи команду /start).")

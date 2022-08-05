@@ -28,7 +28,12 @@ class db_api:
             return result
 
     # Получаем id чата с телеграмм ботом
-    def get_userid_for_bot(self, user: int):
+    def get_userid_for_bot(self, user: int) -> list:
         self.cur.execute("SELECT user_id FROM users WHERE id = ?", (user, ))
         return self.cur.fetchone()
+
+    # Удаляем пользователя из БД
+    def delete_user(self, user_id: str):
+        self.cur.execute("DELETE FROM users WHERE user_id=?", (user_id, ))
+        self.conn.commit()
 
