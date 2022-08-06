@@ -21,7 +21,7 @@ async def process_info_command(message: types.Message):
     user_info = db_api().get_user_info(message.from_user.id)
     serial_titles = db_api_serial().get_user_info(user_info.id)
     anime_titles = db_api_anime().get_user_info(user_info.id)
-    if serial_titles and anime_titles:
+    if serial_titles or anime_titles:
         for title in serial_titles:
             await message.answer(f"Название: {title[0]}\n"
                                  f"Рейтинг IMDB: {title[1]} из 10\n"
