@@ -1,6 +1,6 @@
 from aiogram import types
 from loader import dp
-from db.db_api import db_api
+from db.db_api_users import db_api_users
 from db.db_api_serial import db_api_serial
 from db.db_api_anime import db_api_anime
 import datetime
@@ -18,7 +18,7 @@ def check_title(title, target_titles):
 @dp.message_handler(commands=['info'])
 async def process_info_command(message: types.Message):
 
-    user_info = db_api().get_user_info(message.from_user.id)
+    user_info = db_api_users().get_user_info(message.from_user.id)
     serial_titles = db_api_serial().get_user_info(user_info.id)
     anime_titles = db_api_anime().get_user_info(user_info.id)
     if serial_titles or anime_titles:
@@ -42,7 +42,7 @@ async def process_info_command(message: types.Message):
 # Команда /delete - Удаляем сериал из списка отслеживаемого
 @dp.message_handler(commands=['delete'])
 async def process_delete_command(message: types.Message):
-    user_info = db_api().get_user_info(message.from_user.id)
+    user_info = db_api_users().get_user_info(message.from_user.id)
 
     serial_titles = db_api_serial().get_user_info(user_info.id)
     anime_titles = db_api_anime().get_user_info(user_info.id)
@@ -66,9 +66,9 @@ async def process_delete_command(message: types.Message):
 # Команда /leave - Удаляем пользователя из БД, если он не хочет пользоваться нашим ботом
 @dp.message_handler(commands=['leave'])
 async def process_leave_command(message: types.Message):
-    user_info = db_api().get_user_info(message.from_user.id)
+    user_info = db_api_users().get_user_info(message.from_user.id)
     if user_info:
-        db_api().delete_user(message.from_user.id)
+        db_api_users().delete_user(message.from_user.id)
         await message.answer("Ну ладно, пока, но если я тебе понадоблюсь снова, просто введи команду /start.")
     else:
         await message.answer("Может стоит для начала познакомиться со мной?(введи команду /start).")

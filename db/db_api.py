@@ -1,5 +1,4 @@
 import sqlite3
-import collections
 
 
 # Класс для работы с БД
@@ -10,30 +9,38 @@ class db_api:
         self.conn = sqlite3.connect("db/notifier.db")
         self.cur = self.conn.cursor()
 
-    # Добавляем пользователя в БД
-    def add_user(self, data: tuple):
-        self.cur.execute("INSERT INTO users(user_id, user_name) VALUES (?, ?);", data)
+        self.cur.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            user_id INTEGER UNIQUE NOT NULL, 
+            join_date DATETIME DEFAULT 
+            current_timestamp, 
+            user_name TEXT);
+        """)
+
         self.conn.commit()
 
-    # Получаем информацию об определенном пользователя с id = user_id
-    def get_user_info(self, user_id: str) -> list or None:
-        self.cur.execute("SELECT * from users WHERE user_id=?;", (user_id, ))
-        result = self.cur.fetchone()
+        self.cur.execute("""
+            CREATE TABLE IF NOT EXISTS serial_titles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            user_id INTEGER, title TEXT NOT NULL, 
+            rating_imdb REAL, genres TEXT, 
+            releases TEXT, 
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE);
+        """)
 
-        if result is not None:
-            data = collections.namedtuple('User', ['id', 'user_id', 'join_date', 'user_name'])
-            data = data(id=result[0], user_id=result[1], join_date=result[2], user_name=result[3])
-            return data
-        else:
-            return result
+        self.conn.commit()
 
-    # Получаем id чата с телеграмм ботом
-    def get_userid_for_bot(self, user: int) -> list:
-        self.cur.execute("SELECT user_id FROM users WHERE id = ?", (user, ))
-        return self.cur.fetchone()
+        self.cur.execute("""
+            CREATE TABLE IF NOT EXISTS anime_titles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            user_id INTEGER, 
+            title TEXT NOT NULL, 
+            genres TEXT NOT NULL, 
+            rating TEXT NOT NULL, 
+            "release" DATE, 
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE);
+        """)
 
-    # Удаляем пользователя из БД
-    def delete_user(self, user_id: str):
-        self.cur.execute("DELETE FROM users WHERE user_id=?", (user_id, ))
         self.conn.commit()
 

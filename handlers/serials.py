@@ -1,7 +1,7 @@
 from aiogram import types
 from loader import dp
 from parser.serials import Serials
-from db.db_api import db_api
+from db.db_api_users import db_api_users
 from db.db_api_serial import db_api_serial
 
 
@@ -18,7 +18,7 @@ async def process_add_serial_command(message: types.Message):
 
     if title != "":
         await message.answer(f"Тааак, сейчас посмотрим...")
-        user_info = db_api().get_user_info(message.from_user.id)
+        user_info = db_api_users().get_user_info(message.from_user.id)
         title_info = db_api_serial().get_user_title(user_info.id)
 
         title_info = convert_to_lower(title_info)

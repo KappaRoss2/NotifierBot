@@ -1,7 +1,7 @@
 from aiogram import types
 from loader import dp
 from parser.anime import Anime
-from db.db_api import db_api
+from db.db_api_users import db_api_users
 from db.db_api_anime import db_api_anime
 
 
@@ -11,7 +11,7 @@ async def process_add_anime_command(message: types.Message):
 
     title = str(message.text[11:]).strip()
 
-    user_info = db_api().get_user_info(message.from_user.id)
+    user_info = db_api_users().get_user_info(message.from_user.id)
     titles_info = db_api_anime().get_user_info(user_info.id)
 
     merge_titles_info = []

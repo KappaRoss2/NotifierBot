@@ -1,13 +1,13 @@
 from aiogram import types
 from loader import dp
-from db.db_api import db_api
+from db.db_api_users import db_api_users
 from datetime import datetime
 
 
 # Команда /start - добавляем нового пользователя в БД
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
-    user_info = db_api().get_user_info(message.from_user.id)
+    user_info = db_api_users().get_user_info(message.from_user.id)
 
     if user_info is not None:
         date = datetime.strptime(str(user_info.join_date), "%Y-%m-%d %H:%M:%S")
@@ -15,7 +15,7 @@ async def process_start_command(message: types.Message):
                              + date.strftime("%H:%M:%S") + " ?")
     else:
         data = (message.from_user.id, message.from_user.username)
-        db_api().add_user(data)
+        db_api_users().add_user(data)
         await message.answer("Привет, теперь я буду уведомлять тебя о выходе новых серий, воспользуйся командой"
                              " /help чтобы посмотреть, что я умею")
 

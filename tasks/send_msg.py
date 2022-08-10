@@ -1,4 +1,4 @@
-from db.db_api import db_api
+from db.db_api_users import db_api_users
 from db.db_api_serial import db_api_serial
 from db.db_api_anime import db_api_anime
 from tasks.anime_check import run as anime_run
@@ -42,7 +42,7 @@ async def send_msg_anime():
             user_titles = db_api_anime().get_user_info(user)
             for title in user_titles:
                 if title[0] in target_titles:
-                    chat_id = db_api().get_userid_for_bot(user)[0]
+                    chat_id = db_api_users().get_userid_for_bot(user)[0]
                     await bot.send_message(chat_id, f"Сегодня выйдет новая серия аниме \"{title[0]}\"!")
         update_anime_table(target_titles)
 
@@ -57,7 +57,7 @@ async def send_msg_serial():
             user_titles = db_api_serial().get_user_info(user)
             for title in user_titles:
                 if title[0] in target_titles:
-                    chat_id = db_api().get_userid_for_bot(user)[0]
+                    chat_id = db_api_users().get_userid_for_bot(user)[0]
                     await bot.send_message(chat_id, f"Сегодня выйдет новая серия сериала \"{title[0]}\"!")
         update_serial_table(target_titles)
 
