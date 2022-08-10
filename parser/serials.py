@@ -25,8 +25,7 @@ class Serials(Parser):
 
         element = self.is_valid_title(title)
 
-        if element is not None:
-            return element
+        return element
 
     # Проверяем существует ли такой сериал в принципе
     def is_valid_title(self, title: str) -> selenium.webdriver:
@@ -91,8 +90,13 @@ class Serials(Parser):
 
     # Складываем все воедино
     def run(self, title: str) -> list or str:
+        # Получаем результат поиска
         element = self.parse_page(title)
+
+        # Проверяем нашли ли мы тот сериал, что нам нужен
         if element:
+
+            # Проверяем статус сериала
             if self.is_valid_status(element) == "Fine":
                 element.find_element(By.TAG_NAME, "a").click()
 
@@ -100,14 +104,12 @@ class Serials(Parser):
                     EC.presence_of_element_located((By.CLASS_NAME, "ShowDetails-poster"))
                 )
 
-                window = self.driver.current_window_handle
-                self.driver.switch_to.window(window)
-
+                # Тянем из него нужные данные
                 data = self.parse_title()
 
                 return data
 
             else:
-                return "Сериал уже давно закрыли."
+                return "Сериал уже закрыли."
         else:
             return "Не знаю такого сериала."

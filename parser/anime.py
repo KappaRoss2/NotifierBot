@@ -109,14 +109,18 @@ class Anime(Parser):
 
     # Собираем все воедино
     def run(self, title: str) -> list or str:
+        # Получаем результаты запроса
         titles = self.parse_page(title)
+
+        # Проверяем правильно ли написано название
         if self.is_valid_title(title, titles):
+
+            # Проверяем имеет ли аниме ongoing статус
             if self.is_valid_status(title):
+                # Тянем нужные нам данные
                 return self.parse_title()
             else:
                 return f"Аниме {title} не является онгоингом."
         else:
             return "Неправильное название."
-
-
 
