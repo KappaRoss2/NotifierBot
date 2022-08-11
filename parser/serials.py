@@ -61,9 +61,11 @@ class Serials(Parser):
 
         release = self.get_release()
 
-        if release:
+        if release and type(release) is not str:
             data = [name, rating, genres, release]
             return data
+        elif type(release) is str:
+            return "Что-то пошло не так с поиском даты для сериала :("
         else:
             return "Сериал будет продолжен, но неизвестны даты выхода новых серий, поэтому я пока не могу добавить его"\
                     "в список отслеживаемого :("
@@ -75,9 +77,12 @@ class Serials(Parser):
         except selenium.common.exceptions.NoSuchElementException:
             pass
 
-        WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.CLASS_NAME, "episode-col__date"))
-        )
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.CLASS_NAME, "episode-col__date"))
+            )
+        except selenium.common.TimeoutException:
+            return "It's not okay"
 
         release = self.driver.find_elements(By.CLASS_NAME, "episode-col__date")
 
