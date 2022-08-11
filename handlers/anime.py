@@ -21,6 +21,7 @@ async def process_add_anime_command(message: types.Message):
     merge_titles_info = [element.lower() for element in merge_titles_info]
 
     if title != "":
+        await message.answer(f"Тааак, сейчас посмотрим...")
         if title.lower() not in merge_titles_info:
             anime = Anime("https://animego.org/search/all?q=")
             result = anime.run(title)
