@@ -18,9 +18,12 @@ class Anime(Parser):
         input.send_keys(title)
         input.send_keys(Keys.ENTER)
 
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "search-county"))
-        )
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "search-county"))
+            )
+        except selenium.common.TimeoutException:
+            return "Неправильное название"
 
         switch_to = self.driver.find_elements(By.CLASS_NAME, "nav-link")
 
@@ -112,15 +115,18 @@ class Anime(Parser):
         # Получаем результаты запроса
         titles = self.parse_page(title)
 
-        # Проверяем правильно ли написано название
-        if self.is_valid_title(title, titles):
-
-            # Проверяем имеет ли аниме ongoing статус
-            if self.is_valid_status(title):
-                # Тянем нужные нам данные
-                return self.parse_title()
-            else:
-                return f"Аниме {title} не является онгоингом."
+        if type(titles) is str:
+            return titles
         else:
-            return "Неправильное название."
+            # Проверяем правильно ли написано название
+            if self.is_valid_title(title, titles):
+
+                # Проверяем имеет ли аниме ongoing статус
+                if self.is_valid_status(title):
+                    # Тянем нужные нам данные
+                    return self.parse_title()
+                else:
+                    return f"Аниме {title} не является онгоингом."
+            else:
+                return "Неправильное название."
 

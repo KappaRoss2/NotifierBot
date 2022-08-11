@@ -15,7 +15,7 @@ class Parser:
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument("--disable-dev-shm-usage")
-        self.driver = webdriver.Chrome(options=options, executable_path='/home/NotifierBot/parser/chromedriver')
+        self.driver = webdriver.Chrome(options=options, executable_path='parser/chromedriver')
 
         stealth(self.driver,
                 languages=["en-US", "en"],
