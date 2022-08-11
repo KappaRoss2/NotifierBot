@@ -32,5 +32,5 @@ async def process_add_anime_command(message: types.Message):
         else:
             await message.answer(f"Аниме {title} уже есть в вашем списке.")
     else:
-        await message.answer(f"Неправильно используется команда /add_serial, воспользуйтесь командой /help "
+        await message.answer(f"Неправильно используется команда /add_anime, воспользуйтесь командой /help "
                              f"чтобы ознакомиться с возможностями бота.")
