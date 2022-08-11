@@ -9,29 +9,33 @@ from db.db_api_anime import db_api_anime
 @dp.message_handler(commands=['add_anime'])
 async def process_add_anime_command(message: types.Message):
 
-    title = str(message.text[11:]).strip()
-
     user_info = db_api_users().get_user_info(message.from_user.id)
-    titles_info = db_api_anime().get_user_info(user_info.id)
 
-    merge_titles_info = []
-    for element in titles_info:
-        merge_titles_info += element
+    if user_info:
+        title = str(message.text[11:]).strip()
 
-    merge_titles_info = [element.lower() for element in merge_titles_info]
+        titles_info = db_api_anime().get_user_info(user_info.id)
 
-    if title != "":
-        await message.answer(f"Тааак, сейчас посмотрим...")
-        if title.lower() not in merge_titles_info:
-            anime = Anime("https://animego.org/search/all?q=")
-            result = anime.run(title)
-            if type(result) is str:
-                await message.answer(result)
+        merge_titles_info = []
+        for element in titles_info:
+            merge_titles_info += element
+
+        merge_titles_info = [element.lower() for element in merge_titles_info]
+
+        if title != "":
+            await message.answer(f"Тааак, сейчас посмотрим...")
+            if title.lower() not in merge_titles_info:
+                anime = Anime("https://animego.org/search/all?q=")
+                result = anime.run(title)
+                if type(result) is str:
+                    await message.answer(result)
+                else:
+                    db_api_anime().add([user_info.id] + result)
+                    await message.answer(f"Аниме {title} Добавлено в список отслеживаемого.")
             else:
-                db_api_anime().add([user_info.id] + result)
-                await message.answer(f"Аниме {title} Добавлено в список отслеживаемого.")
+                await message.answer(f"Аниме {title} уже есть в вашем списке.")
         else:
-            await message.answer(f"Аниме {title} уже есть в вашем списке.")
+            await message.answer(f"Неправильно используется команда /add_anime, воспользуйтесь командой /help "
+                                 f"чтобы ознакомиться с возможностями бота.")
     else:
-        await message.answer(f"Неправильно используется команда /add_anime, воспользуйтесь командой /help "
-                             f"чтобы ознакомиться с возможностями бота.")
+        await message.answer("Может стоит для начала познакомиться со мной?(введи команду /start).")
