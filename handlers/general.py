@@ -9,7 +9,7 @@ import datetime
 # Проверяем имеется ли сериал в списке отслеживаемого у пользователя
 def check_title(title, target_titles):
     for element in target_titles:
-        if title.lower() in element[0].lower():
+        if title in element:
             return True
     return False
 
