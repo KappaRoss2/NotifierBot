@@ -61,11 +61,12 @@ class Serials(Parser):
 
         release = self.get_release()
 
-        if release and type(release) is not str:
+        if release == "Wrong":
+            return "Что-то пошло не так с поиском даты для сериала :("
+
+        if release:
             data = [name, rating, genres, release]
             return data
-        elif type(release) is str:
-            return "Что-то пошло не так с поиском даты для сериала :("
         else:
             return "Сериал будет продолжен, но неизвестны даты выхода новых серий, поэтому я пока не могу добавить его"\
                     "в список отслеживаемого :("
@@ -82,16 +83,23 @@ class Serials(Parser):
                 EC.visibility_of_element_located((By.CLASS_NAME, "episode-col__date"))
             )
         except selenium.common.TimeoutException:
-            return "It's not okay"
+            return "Wrong"
 
         release = self.driver.find_elements(By.CLASS_NAME, "episode-col__date")
 
-        release_dates = [element.text for element in release if element.text != "" and element.text != "вчера"
-                         and element.text != "сегодня"]
+        release_dates = []
 
-        for dates in reversed(release_dates):
-            if datetime.datetime.strptime(dates, '%d.%m.%Y').date() > date.today():
-                return str(datetime.datetime.strptime(dates, '%d.%m.%Y').date())
+        for element in release:
+            try:
+                if datetime.datetime.strptime(element.text, '%d.%m.%Y').date() > date.today():
+                    release_dates.append(element.text)
+                else:
+                    break
+            except ValueError:
+                break
+
+        if release_dates:
+            return str(datetime.datetime.strptime(release_dates[len(release_dates) - 1], '%d.%m.%Y').date())
 
     # Складываем все воедино
     def run(self, title: str) -> list or str:
