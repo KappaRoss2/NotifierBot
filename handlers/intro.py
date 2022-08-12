@@ -16,8 +16,7 @@ async def process_start_command(message: types.Message):
     else:
         data = (message.from_user.id, message.from_user.username)
         db_api_users().add_user(data)
-        await message.answer("Привет, теперь я буду уведомлять тебя о выходе новых серий "
-                             "(кстати, я принимаю только русские названия), воспользуйся командой"
+        await message.answer("Привет, теперь я буду уведомлять тебя о выходе новых серий, воспользуйся командой"
                              " /help чтобы посмотреть, что я умею")
 
 

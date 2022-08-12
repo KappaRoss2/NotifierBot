@@ -20,7 +20,7 @@ class db_api_serial(db_api):
         return result
 
     # Получаем данные о сериалах, которые отслеживает определенный пользователь
-    def get_user_info(self, user_id: str) -> list:
+    def get_user_info(self, user_id: str) -> tuple:
         self.cur.execute("SELECT title, rating_imdb, genres, releases FROM serial_titles WHERE user_id=?;", (user_id,))
         return self.cur.fetchall()
 
