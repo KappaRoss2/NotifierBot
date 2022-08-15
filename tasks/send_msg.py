@@ -18,7 +18,7 @@ def update_anime_table(target_titles: tuple):
         if type(result) is list and result is not None:
             db_api_anime().update_table(result[3], result[0])
         elif type(result) is str:
-            db_api_anime().delete_column(result[0])
+            db_api_anime().delete_column(title)
 
 
 # Изменяем данные в таблице serial_titles
@@ -29,7 +29,7 @@ def update_serial_table(target_titles: tuple):
         if type(result) is list and result is not None:
             db_api_serial().update_table(result[3], result[0])
         elif type(result) is str:
-            db_api_serial().delete_column(result[0])
+            db_api_serial().delete_column(title)
 
 
 # Отправляем сообщение о выходе новых серий аниме соответствующим пользователям
