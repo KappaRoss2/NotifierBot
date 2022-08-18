@@ -35,7 +35,7 @@ def update_serial_table(target_titles: tuple):
 # Отправляем сообщение о выходе новых серий аниме соответствующим пользователям
 async def send_msg_anime():
     target_titles = await anime_run()
-    today = datetime.datetime.now().strftime("%#d-%m-%Y")
+    today = datetime.datetime.now().strftime("%Y-%m-%#d")
     if target_titles:
         users = db_api_anime().get_userid_notify(today)
         for user in users:
@@ -65,7 +65,7 @@ async def send_msg_serial():
 # Запускаем функции send_msg_anime и send_msg_serial с интервалом в один день.
 scheduler = AsyncIOScheduler()
 
-scheduler.add_job(send_msg_anime, "cron", hour=12, minute=0)
+scheduler.add_job(send_msg_anime, "cron", hour=12, minute=5)
 scheduler.add_job(send_msg_serial, "cron", hour=12, minute=0)
 
 scheduler.start()
